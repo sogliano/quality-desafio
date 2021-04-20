@@ -21,18 +21,16 @@ import static org.mockito.MockitoAnnotations.openMocks;
 class FlightRepositoryImplTest {
 
     private TestUtils testUtils = new TestUtils();
-    private List<FlightDTO> allFlights;
+    private List<FlightDTO> flightModify;
     private List<FlightDTO> filteredFlights;
-    private List<FlightDTO> oneFlight;
 
     @Mock
     private FlightRepository flightRepository = new FlightRepositoryImpl();
 
     @BeforeEach
-    void setUp(){
-        allFlights = testUtils.loadDatabaseFlightsTest("allFlights");
+    void setUp() throws Exception {
         filteredFlights = testUtils.loadDatabaseFlightsTest("filteredFlights");
-        oneFlight = testUtils.loadDatabaseFlightsTest("oneFlight");
+        flightModify = flightRepository.getFlights(new HashMap<String,String>());
     }
 
     @Test
@@ -42,7 +40,8 @@ class FlightRepositoryImplTest {
         List<FlightDTO> x = new ArrayList<>();
         Map<String,String> params = new HashMap<>();
         //when(flightRepository.getFlights(params)).thenReturn(allFlights);
-        Assertions.assertEquals(allFlights, flightRepository.getFlights(params));
+        flightModify = flightRepository.getFlights(new HashMap<String,String>());
+        Assertions.assertEquals(flightModify, flightRepository.getFlights(params));
     }
 
     @Test

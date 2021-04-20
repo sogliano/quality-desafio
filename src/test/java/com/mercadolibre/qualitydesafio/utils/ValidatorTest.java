@@ -2,8 +2,6 @@ package com.mercadolibre.qualitydesafio.utils;
 
 import com.mercadolibre.qualitydesafio.dto.*;
 import com.mercadolibre.qualitydesafio.exceptions.*;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

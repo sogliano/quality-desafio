@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +21,6 @@ class HotelRepositoryImplTest {
     private List<HotelDTO> filteredHotels;
     private List<HotelDTO> oneHotel;
 
-    @Mock
     private HotelRepository hotelRepository = new HotelRepositoryImpl();
 
     @BeforeEach
@@ -29,6 +29,7 @@ class HotelRepositoryImplTest {
         filteredHotels = testUtils.loadDatabaseHotelsTest("filteredHotels");
         oneHotel = testUtils.loadDatabaseHotelsTest("oneHotel");
     }
+
     @Test
     void getHotels() throws Exception {
         HashMap<String,String> params = new HashMap<>();
