@@ -65,7 +65,6 @@ public class DatabaseUtils {
         } catch (Exception e){
             e.printStackTrace();
         }
-        //writeDatabase(hotels, null, "Hotels");
         return hotels;
     }
 
@@ -114,7 +113,6 @@ public class DatabaseUtils {
         } catch (Exception e){
             e.printStackTrace();
         }
-        //writeDatabase(null, flights, "Flights");
         return flights;
     }
 }

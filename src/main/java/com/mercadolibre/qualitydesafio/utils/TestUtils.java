@@ -45,7 +45,6 @@ public class TestUtils {
         } catch (Exception e){
             e.printStackTrace();
         }
-        //writeDatabase(hotels, null, "Hotels");
         return hotels;
     }
 

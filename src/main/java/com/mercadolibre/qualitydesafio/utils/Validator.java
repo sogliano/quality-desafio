@@ -238,7 +238,6 @@ public class Validator {
     }
 
     public Boolean flightExists(String flightCode, List<FlightDTO> flights) throws Exception {
-        System.out.println("Buscando: " + flightCode);
         for(FlightDTO flight : flights){
             if(flight.getFlightNumber().equalsIgnoreCase(flightCode)) return true;
         }
