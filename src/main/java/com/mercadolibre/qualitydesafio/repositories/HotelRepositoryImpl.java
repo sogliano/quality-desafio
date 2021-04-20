@@ -29,7 +29,9 @@ public class HotelRepositoryImpl implements HotelRepository {
 
         if(params.size() == 0) {
             for(HotelDTO h : this.hotelDatabaseModify){
-                if(h.getReserved().equals("NO")){ aux.add(h); }
+                if(h.getReserved().equals("NO")){
+                    aux.add(h);
+                }
             }
             return aux;
         } else {

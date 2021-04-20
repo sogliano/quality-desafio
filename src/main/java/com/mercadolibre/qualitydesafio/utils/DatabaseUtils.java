@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class DatabaseUtils {
         String collect = "";
         FileWriter writer = new FileWriter(csvFile);
         if(type.equals("Hotels")){
-            collect = "Código Hotel,Nombre,Lugar/Ciudad,Tipo de Habitación,Precio por noche,Disponible Desde,Disponible hasta,Reservado\n";
+            collect = "Codigo Hotel,Nombre,Lugar/Ciudad,Tipo de Habitación,Precio por noche,Disponible Desde,Disponible hasta,Reservado\n";
             writer = new FileWriter(csvFile);
             for(HotelDTO hotel: hotels) {
                 collect += hotel.getCode() + "," + hotel.getName() + "," + hotel.getCity() + "," + hotel.getRoomType() + "," + "$" + hotel.getPrice() + "," + hotel.getDateFrom().format(formatter) + "," + hotel.getDateTo().format(formatter) + "," + hotel.getReserved()+"\n";
@@ -56,7 +57,7 @@ public class DatabaseUtils {
             while((line = br.readLine()) != null){
                 data = line.split(separator);
                 // Para ponerlo en formato d/m/y -> formatter.format(localDate)
-                if(!data[0].equals("Código Hotel")){
+                if(!data[0].equals("Codigo Hotel")){
                     HotelDTO hotel = new HotelDTO(data[0], data[1], data[2], data[3], Integer.valueOf(data[4].replace("$", "").replace(".", "")), LocalDate.parse(data[5], formatter), LocalDate.parse(data[6], formatter), data[7]);
                     hotels.add(hotel);
                 }
@@ -66,6 +67,25 @@ public class DatabaseUtils {
         }
         //writeDatabase(hotels, null, "Hotels");
         return hotels;
+    }
+
+    public String fixDate(String date){
+        String[] dateArr = date.split("/");
+        String fixedDate = "";
+        int slashCount = 0;
+        for(int i = 0; i < dateArr.length; i ++){
+            if(dateArr[i].length() == 2 || dateArr[i].length() == 4){
+                fixedDate += dateArr[i];
+            }
+            if(dateArr[i].length() == 1){
+                fixedDate += "0" + dateArr[i];
+            }
+            if(slashCount < 2){
+                fixedDate += "/";
+                slashCount++;
+            }
+        }
+        return fixedDate;
     }
 
     public List<FlightDTO> loadFlightsDatabase() {
@@ -82,8 +102,13 @@ public class DatabaseUtils {
             while((line = br.readLine()) != null){
                 data = line.split(separator);
                 if(!data[0].equals("Nro Vuelo")){
-                    FlightDTO flight = new FlightDTO(data[0],data[1],data[2],data[3],Integer.valueOf(data[4].replace("$", "").replace(".","")),LocalDate.parse(data[5], formatter),LocalDate.parse(data[6], formatter));
-                    flights.add(flight);
+                    try{
+                        FlightDTO flight = new FlightDTO(data[0],data[1],data[2],data[3],Integer.valueOf(data[4].replace("$", "").replace(".","")),LocalDate.parse((data[5]), formatter),LocalDate.parse(data[6], formatter));
+                        flights.add(flight);
+                    } catch (DateTimeParseException e) {
+                        FlightDTO flight = new FlightDTO(data[0],data[1],data[2],data[3],Integer.valueOf(data[4].replace("$", "").replace(".","")),LocalDate.parse(fixDate(data[5]), formatter),LocalDate.parse(fixDate(data[6]), formatter));
+                        flights.add(flight);
+                    }
                 }
             }
         } catch (Exception e){

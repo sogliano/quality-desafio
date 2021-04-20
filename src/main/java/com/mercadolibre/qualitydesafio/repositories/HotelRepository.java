@@ -9,6 +9,5 @@ import java.util.Map;
 
 public interface HotelRepository {
     List<HotelDTO> getHotels(Map<String,String> params) throws Exception;
-
     ResponseDTO makeBooking(PayloadDTO payload) throws Exception;
 }

@@ -24,10 +24,8 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public List<HotelDTO> getHotels(Map<String, String> params) throws Exception {
         if(params.size() == 3){
-            if(validator.validateKeys(params, "hotelSearch")){
-                if(validator.validateSearchValues(params)){
+            if(validator.validateKeys(params, "hotelSearch") && validator.validateSearchValues(params)){
                     return hotelRepository.getHotels(params);
-                }
             }
         }
         if(params.size() == 0){

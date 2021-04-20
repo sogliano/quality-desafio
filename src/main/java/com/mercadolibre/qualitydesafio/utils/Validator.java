@@ -12,22 +12,19 @@ import java.util.Map;
 @NoArgsConstructor
 public class Validator {
     // Payload validation.
-    public void validatePayload(PayloadDTO payload) throws Exception {
+    public Boolean validatePayload(PayloadDTO payload) throws Exception {
         if(payload.getUserName() == null || (payload.getFlightReservation() == null && payload.getBooking() == null)){
             throw new InvalidPayloadException("Invalid payload. Please make sure you have: 'username' and 'booking'/'flightReservation' parameters.");
         } else {
             validateEmail("userName", payload.getUserName());
             if(payload.getBooking() != null && payload.getFlightReservation() == null) {
-                System.out.println("Validando booking.");
                 BookingDTO booking = payload.getBooking();
                 validateBooking(booking);
                 if(Integer.parseInt(payload.getBooking().getPeopleAmount()) != payload.getBooking().getPeople().size()){
                     throw new InvalidPeopleException();
                 }
             }
-
             if(payload.getFlightReservation() != null && payload.getBooking() == null){
-                System.out.println("Validando reservation.");
                 ReservationDTO reservation = payload.getFlightReservation();
                 validateReservation(reservation);
                 if(Integer.parseInt(payload.getFlightReservation().getSeats()) != payload.getFlightReservation().getPeople().size()){
@@ -35,10 +32,11 @@ public class Validator {
                 }
             }
         }
+        return true;
     }
 
     // All booking's parameters validation.
-    public void validateBooking(BookingDTO booking) throws Exception {
+    public Boolean validateBooking(BookingDTO booking) throws Exception {
         validateDates(booking.getDateFrom(), booking.getDateTo());
         validateStringParams("destination", booking.getDestination());
         validateStringParams("hotelCode", booking.getHotelCode());
@@ -47,6 +45,7 @@ public class Validator {
         validateRoomType(booking.getRoomType(), booking.getPeopleAmount());
         validatePeople(booking.getPeople());
         validatePayment(booking.getPaymentMethod());
+        return true;
     }
 
     public void validateReservation(ReservationDTO reservation) throws Exception {
@@ -187,7 +186,7 @@ public class Validator {
         }
 
         if(type.equals("flightSearch")){
-            if(!params.containsKey("origin") || !params.containsKey("destination") || !params.containsKey("dateFrom") || params.containsKey("dateTo")){
+            if(!params.containsKey("origin") || !params.containsKey("destination") || !params.containsKey("dateFrom") || !params.containsKey("dateTo")){
                 throw new InvalidParamKeyException();
             }
         }

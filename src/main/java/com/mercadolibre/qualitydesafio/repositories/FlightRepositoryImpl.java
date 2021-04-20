@@ -25,7 +25,6 @@ public class FlightRepositoryImpl implements FlightRepository {
     @Override
     public List<FlightDTO> getFlights(Map<String, String> params) throws Exception {
         List<FlightDTO> aux = new ArrayList<>();
-
         if(params.size() == 0) {
             return this.flightDatabaseModify;
         } else {
@@ -66,7 +65,6 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     // Update hotel reservation status.
     private void modifyDatabase(PayloadDTO payloadDTO) throws Exception{
-        System.out.println("Largo del flights: " + this.flightDatabaseModify.size());
         FlightDTO aux = validator.findFlightByCode(payloadDTO.getFlightReservation().getFlightNumber(), this.flightDatabaseModify);
         deleteFlight(aux);
         dbUtils.writeDatabase(null, this.flightDatabaseModify, "Flights");

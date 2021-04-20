@@ -3,6 +3,7 @@ package com.mercadolibre.qualitydesafio.controllers;
 import com.mercadolibre.qualitydesafio.dto.PayloadDTO;
 import com.mercadolibre.qualitydesafio.dto.StatusDTO;
 import com.mercadolibre.qualitydesafio.exceptions.*;
+import com.mercadolibre.qualitydesafio.services.HotelService;
 import com.mercadolibre.qualitydesafio.services.HotelServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,8 +16,13 @@ import java.util.Map;
 @RequestMapping("/api/v1")
 public class HotelController {
 
+    private HotelService hotelService;
+
     @Autowired
-    private HotelServiceImpl hotelService;
+    public HotelController(HotelService hotelService){
+        this.hotelService = hotelService;
+    }
+
 
     @GetMapping("/hotels")
     public ResponseEntity getHotels(@RequestParam Map<String, String> params) throws Exception {
